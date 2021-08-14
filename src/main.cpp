@@ -4,8 +4,9 @@
 
 #include "Level.h"
 #include "DrawLevel.h"
+#include "AStar.h"
 
-constexpr float LEVEL_FILLUP = 0.1;
+constexpr float LEVEL_FILLUP = 0.3;
 
 int main()
 {
@@ -26,10 +27,18 @@ int main()
     }
 
     // set start and choose a random goal
-    level.startX = LEVEL_SIZE / 2;
-    level.startY = 3; // almost at the top of the level
-    level.goalX = LEVEL_SIZE * zeroOneDistribution();
-    level.goalY = LEVEL_SIZE * 0.9f;
+    level.start = {{LEVEL_SIZE / 2, 3}}; // center top
+    level.dest = {{static_cast<int>(LEVEL_SIZE * zeroOneDistribution()), static_cast<int>(LEVEL_SIZE * 0.9f)}};
+    level.tiles[level.start.x][level.start.y].occupied = false;
+    level.tiles[level.dest.x][level.dest.y].occupied = false;
+
+    AStar<Level, LEVEL_SIZE,LEVEL_SIZE> aStar(level);
+
+    std::vector<Vec2i> path = aStar.aStar(level.start, level.dest);
+    for (Vec2i& tile : path)
+    {
+        level.tiles[tile.x][tile.y].path = true;
+    }
 
     ExportLevelToPng(level);
 }

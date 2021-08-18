@@ -88,35 +88,33 @@ public:
             y = node.y;
             closedList[x][y] = true;
 
-            //For each neighbour starting from North-West to South-East
-            for (int newX = -1; newX <= 1; newX++) {
-                for (int newY = -1; newY <= 1; newY++) {
-                    double gNew, hNew, fNew;
-                    if (isValid(x + newX, y + newY)) {
-                        if (isDestination(x + newX, y + newY, dest))
+            const std::vector<std::pair<int, int>> positions = {{0, -1}, {-1, 0}, {1, 0}, {0, 1}};
+            for (auto [newX, newY] : positions) {
+                double gNew, hNew, fNew;
+                if (isValid(x + newX, y + newY)) {
+                    if (isDestination(x + newX, y + newY, dest))
+                    {
+                        //Destination found - make path
+                        allMap[x + newX][y + newY].parentX = x;
+                        allMap[x + newX][y + newY].parentY = y;
+                        return makePath(allMap, dest);
+                    }
+                    else if (closedList[x + newX][y + newY] == false)
+                    {
+                        gNew = node.gCost + 1.0;
+                        hNew = calculateH(x + newX, y + newY, dest);
+                        fNew = gNew + hNew;
+                        // Check if this path is better than the one already present
+                        if (allMap[x + newX][y + newY].fCost == std::numeric_limits<float>::max() ||
+                            allMap[x + newX][y + newY].fCost > fNew)
                         {
-                            //Destination found - make path
+                            // Update the details of this neighbour node
+                            allMap[x + newX][y + newY].fCost = fNew;
+                            allMap[x + newX][y + newY].gCost = gNew;
+                            allMap[x + newX][y + newY].hCost = hNew;
                             allMap[x + newX][y + newY].parentX = x;
                             allMap[x + newX][y + newY].parentY = y;
-                            return makePath(allMap, dest);
-                        }
-                        else if (closedList[x + newX][y + newY] == false)
-                        {
-                            gNew = node.gCost + 1.0;
-                            hNew = calculateH(x + newX, y + newY, dest);
-                            fNew = gNew + hNew;
-                            // Check if this path is better than the one already present
-                            if (allMap[x + newX][y + newY].fCost == std::numeric_limits<float>::max() ||
-                                allMap[x + newX][y + newY].fCost > fNew)
-                            {
-                                // Update the details of this neighbour node
-                                allMap[x + newX][y + newY].fCost = fNew;
-                                allMap[x + newX][y + newY].gCost = gNew;
-                                allMap[x + newX][y + newY].hCost = hNew;
-                                allMap[x + newX][y + newY].parentX = x;
-                                allMap[x + newX][y + newY].parentY = y;
-                                openList.emplace_back(allMap[x + newX][y + newY]);
-                            }
+                            openList.emplace_back(allMap[x + newX][y + newY]);
                         }
                     }
                 }

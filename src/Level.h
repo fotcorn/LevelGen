@@ -1,25 +1,14 @@
 #pragma once
 
 #include "Vec.h"
+#include "Tile.h"
 
 #include <vector>
-
-enum class TileType {
-    NONE,
-    START_LEFT,
-    START_RIGHT,
-    I_LEFT,
-    BIG_L,
-    SMALL_L,
-    S_LEFT,
-    S_RIGHT,
-};
 
 struct Tile {
     // TODO: switch to enum
     bool occupied = false;
     bool path = false;
-    TileType type = TileType::NONE;
 };
 
 constexpr int LEVEL_SIZE = 20;

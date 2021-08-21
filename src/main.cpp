@@ -8,6 +8,20 @@
 
 constexpr float LEVEL_FILLUP = 0.3;
 
+std::vector<TileType> tileTypes = {
+    {"S-Left", Rotation::None, EntryPath::Left, Path::None, Path::Right, Path::None},
+    {"S-Right", Rotation::None, EntryPath::Right, Path::None, Path::Left, Path::None},
+
+    {"I-Left", Rotation::None, EntryPath::Left, Path::None, Path::Left, Path::None},
+    {"I-Left", Rotation::Clockwise180, EntryPath::Right, Path::None, Path::Right, Path::None},
+
+    {"L-Small", Rotation::None, EntryPath::Right, Path::Left, Path::None, Path::None},
+    {"L-Small", Rotation::Clockwise270, EntryPath::Left, Path::None, Path::None, Path::Right},
+
+    {"L-Big", Rotation::None, EntryPath::Left, Path::Right, Path::None, Path::None},
+    {"L-Big", Rotation::Clockwise270, EntryPath::Right, Path::None, Path::None, Path::Left},   
+};
+
 int main()
 {
     Level level;
@@ -22,7 +36,6 @@ int main()
     {
         for (size_t x = 0; x < LEVEL_SIZE; x++) {
             level.tiles[y][x].occupied = zeroOneDistribution() < LEVEL_FILLUP;
-            level.tiles[y][x].type = TileType::NONE;
         }
     }
 

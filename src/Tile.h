@@ -31,3 +31,9 @@ struct TileType {
     Path bottom;
     Path right;
 };
+
+struct StartEndTile {
+    std::string name;
+    Rotation rotation;
+    EntryPath startPath;
+};

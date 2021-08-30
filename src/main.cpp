@@ -27,6 +27,11 @@ std::vector<TileType> tileTypes = {
     {"L-Big", Rotation::Clockwise270, EntryPath::Right, Path::None, Path::None, Path::Left},   
 };
 
+int getRandomInt(std::mt19937& engine, int min, int max)
+{
+    return std::uniform_int_distribution<>(min, max)(engine);
+}
+
 int main()
 {
     Level level;
@@ -50,13 +55,21 @@ int main()
     level.tiles[level.start.x][level.start.y].occupied = false;
     level.tiles[level.dest.x][level.dest.y].occupied = false;
 
+    // generate path through level
     AStar<Level, LEVEL_SIZE,LEVEL_SIZE> aStar(level);
-
     std::vector<Vec2i> path = aStar.aStar(level.start, level.dest);
     for (Vec2i& tile : path)
     {
         level.tiles[tile.x][tile.y].path = true;
     }
 
-    ExportLevelToPng(level);
+    int startIndex = getRandomInt(mt, 0, startEndTiles.size() - 1);
+    
+    const Vec2i& firstTile = path[0];
+    const Vec2i& secondTile = path[1];
+    
+    Rotation rotation = getRotation(firstTile, secondTile);
+    level.startTile = std::make_unique<StartEndTileRef>(startEndTiles[startIndex], rotation);
+
+    //ExportLevelToPng(level);
 }

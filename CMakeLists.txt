@@ -8,6 +8,7 @@ project(LevelGen
 add_executable(LevelGen
   ${CMAKE_CURRENT_SOURCE_DIR}/src/main.cpp
   ${CMAKE_CURRENT_SOURCE_DIR}/src/DrawLevel.cpp
+  ${CMAKE_CURRENT_SOURCE_DIR}/src/Tile.cpp
 )
 
 target_compile_features(LevelGen PRIVATE cxx_std_20)

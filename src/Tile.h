@@ -1,5 +1,7 @@
 #pragma once
 
+#include "Vec.h"
+
 #include <vector>
 #include <string>
 
@@ -37,3 +39,11 @@ struct StartEndTile {
     Rotation rotation;
     EntryPath startPath;
 };
+
+struct StartEndTileRef {
+    StartEndTile& tile;
+    Rotation rotation;
+    StartEndTileRef(StartEndTile& tile, Rotation rotation) : tile(tile), rotation(rotation) {}
+};
+
+Rotation getRotation(const Vec2i& first, const Vec2i& second);

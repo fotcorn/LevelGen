@@ -8,14 +8,12 @@
 enum class EntryPath {
     Left,
     Right,
-    Both,
 };
 
 enum class Path {
     None,
     Left,
     Right,
-    Both,
 };
 
 enum class Rotation : int {
@@ -25,13 +23,26 @@ enum class Rotation : int {
     Clockwise270,
 };
 
+enum class Direction : int {
+    Up = 0,
+    Right,
+    Down,
+    Left,
+};
+
 struct TileType {
     std::string name;
     Rotation rotation;
     EntryPath entryPath;
     Path left;
-    Path bottom;
+    Path down;
     Path right;
+};
+
+struct TileRef {
+    TileType& tile;
+    Direction direction;
+    TileRef(TileType& tile, Direction direction) : tile(tile), direction(direction) {}
 };
 
 struct StartEndTile {
@@ -42,8 +53,10 @@ struct StartEndTile {
 
 struct StartEndTileRef {
     StartEndTile& tile;
-    Rotation rotation;
-    StartEndTileRef(StartEndTile& tile, Rotation rotation) : tile(tile), rotation(rotation) {}
+    Direction direction;
+    StartEndTileRef(StartEndTile& tile, Direction direction) : tile(tile), direction(direction) {}
 };
 
-Rotation getRotation(const Vec2i& first, const Vec2i& second);
+Direction getDirection(const Vec2i& first, const Vec2i& second);
+
+EntryPath pathToEntryPath(Path);

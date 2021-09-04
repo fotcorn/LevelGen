@@ -10,6 +10,7 @@ struct Tile {
     // TODO: switch to enum
     bool occupied = false;
     bool path = false;
+    std::unique_ptr<TileRef> tile;
 };
 
 constexpr int LEVEL_SIZE = 20;

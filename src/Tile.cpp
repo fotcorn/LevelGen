@@ -1,28 +1,44 @@
 #include "Tile.h"
 #include "Vec.h"
 
-Rotation getRotation(const Vec2i& first, const Vec2i& second)
+#include <cassert>
+
+Direction getDirection(const Vec2i& first, const Vec2i& second)
 {
     if (first.x == second.x)
     {
         if (first.y > second.y)
         {
-            return Rotation::None;
+            return Direction::Up;
         }
         else
         {
-            return Rotation::Clockwise180;
+            return Direction::Down;
         }
     }
     else
     {
         if (first.x > second.x)
         {
-            return Rotation::Clockwise270;
+            return Direction::Left;
         }
         else
         {
-            return Rotation::Clockwise90;
+            return Direction::Right;
         }
     }
+}
+
+EntryPath pathToEntryPath(Path path)
+{
+    switch (path)
+    {
+    case Path::Left:
+        return EntryPath::Left;
+    case Path::Right:
+        return EntryPath::Right;
+    default:
+        assert(false);
+    }
+    assert(false);
 }
